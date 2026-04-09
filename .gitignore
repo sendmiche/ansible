@@ -1,0 +1,9 @@
+.env/
+collections/
+roles/geerlingguy.docker
+roles/geerlingguy.firewall
+roles/iphizic.remna-node
+roles/iphizic.remna-server
+group_vars/all.yml
+inventory/inventory.yml
+.idea/

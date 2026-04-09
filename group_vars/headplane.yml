@@ -1,0 +1,20 @@
+firewall_allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+
+caddy_config: |
+  {{ headplaine_hs_public_url }} {
+      reverse_proxy /admin* http://headplane:3000
+      reverse_proxy * http://headscale:8080
+  }
+  :443 {
+      tls internal
+      respond 204
+  }
+
+caddy_network_config:
+    headscale-network:
+        name: headscale-network
+        driver: bridge
+        external: true

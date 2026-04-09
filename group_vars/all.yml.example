@@ -1,0 +1,14 @@
+default_user: iphizic
+
+os_auth_pw_max_age: 9999
+
+firewall_allowed_tcp_ports:
+  - "22"
+
+docker_users:
+  - "{{ default_user }}"
+
+headplaine_hs_public_url: "https://headscale.example.com"
+remna_domain: example.com
+remna_jwt_auth_secret: change_me
+remna_jvt_api_token_secret: change_me

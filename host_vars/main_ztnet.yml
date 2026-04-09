@@ -1,0 +1,38 @@
+firewall_allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+    
+firewall_allowed_udp_ports:
+  - "9993"
+
+firewall_additional_rules:
+  - iptables -A INPUT -s 172.31.255.0/29 -p tcp --dport 9993 -j ACCEPT
+  - iptables -A INPUT -s 172.31.250.0/24 -j ACCEPT
+  - iptables -A INPUT -s {{ zerotier_network }} -j ACCEPT
+
+caddy_config: |
+  https://{{ mon_server_kuma_domain }} {
+      reverse_proxy * http://kuma:3001
+  }
+  https://{{ mon_server_domain_name }} {
+      reverse_proxy * http://grafana:3000
+  }
+  https://{{ ztnet_domain_name }} {
+      reverse_proxy * http://ztnet:3000
+  }
+  :443 {
+      tls internal
+      respond 204
+  }
+
+
+caddy_network_config:
+  app-network:
+    name: ztnet-network
+    driver: bridge
+    external: true
+  mon-network:
+    name: mon-network
+    driver: bridge
+    external: true

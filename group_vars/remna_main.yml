@@ -1,0 +1,28 @@
+firewall_allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+
+caddy_config: |
+  https://{{ remna_domain }} {
+      reverse_proxy * http://remnawave:3000
+  }
+  {% if remna_sub_page %}
+  https://{{ remna_sub_panel_domain }} {
+      reverse_proxy * http://remnawave-subscription-page:3010
+  }
+  {% endif %}
+  :443 {
+      tls internal
+      respond 204
+  }
+
+caddy_network_config:
+      remnawave-network:
+        name: remnawave-network
+        driver: bridge
+        external: true
+
+sysctl_overwrite:
+      # Enable IPv4 traffic forwarding.
+  net.ipv4.ip_forward: 0
